@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sistema de Salud</title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/sandstone/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="./index.html">Inicio</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="./pacientes.html">Pacientes</a>
+            </li>
+            <li>
+                <a class="nav-link" href="./empleados.html">Empleados</a>
+            </li>
+            <li>
+              <a class="nav-link" href="./edificios.html">Edificios</a>
+            </li>
+          </ul>
+          </div>
+      </nav>
+    <div class="container">
+      <div class="row mt-5"> 
+          <div class="col-md-7">
+                  <table class="table" id="empleados">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th scope="col" onclick="sortTable(0)">ID Edificio</th>
+                          <th scope="col" onclick="sortTable(1)">Rut</th>
+                          <th scope="col" onclick="sortTable(2)">Nombre</th>
+                          <th scope="col" onclick="sortTable(3)">Especialidad</th>
+                        </tr>
+                      </thead>
+                      <tbody id='mostrarEmpleado'> </tbody>
+                    </table>
+          </div>
+          <div class="col-md-5">
+            <div class="card">
+              <div class="card-body">
+                <form action="/addEmpleado" method="POST">
+                  <div class="form-group">
+                    <input type="text" name="nombre" placeholder="Nombre" class=" form-control">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" name="rut" placeholder="Rut" class=" form-control">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" name="especialidadId" placeholder="Especialidad" class=" form-control">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" name="id_edificio" placeholder="ID Edificio" class=" form-control">
+                  </div>
+                  <button type="submit" class="btn btn-primary"> Enviar </button>
+                </form>
+              </div>
+              <!-- ACA EMPECE A CAMBIAR WEAS POR SI FALLA -->
+            <div class="card-body">
+                    <div class="form-group">
+                        <input type="text" id="buscar1" onkeyup="Buscar(1)" placeholder="Buscar por Rut" class=" form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="buscar2" onkeyup="Buscar(2)" placeholder="Buscar por Nombre" class=" form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="buscar3" onkeyup="Buscar(3)" placeholder="Buscar por Especialidad" class=" form-control">
+                    </div>
+                </div>
+                <!-- ACA EMPECE A CAMBIAR WEAS POR SI FALLA -->
+            </div>
+          </div>
+      </div>
+     </div> 
+</body>
+
+
+<script>
+    var contenido = document.querySelector('#mostrarEmpleado')
+    fetch('http://localhost:4000/mostrarEmpleado')// de donde viene
+    .then(res => res.json())
+    .then(data => {
+      for(i =0; i<data.length ; i++){//recorrer el json y el $ es el valor del dato 
+        contenido.innerHTML += `
+        <td> ${data[i].id_edificio} </td>
+        <td> ${data[i].rut} </td>
+        <td> ${data[i].nombre} </td>
+        <td> ${data[i].especialidadId} </td>
+        `
+    }})
+</script>
+
+<script>
+        function sortTable(n) {
+          var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+          table = document.getElementById("empleados");
+          switching = true;
+          // Set the sorting direction to ascending:
+          dir = "asc";
+          /* Make a loop that will continue until
+          no switching has been done: */
+          while (switching) {
+            // Start by saying: no switching is done:
+            switching = false;
+            rows = table.rows;
+            /* Loop through all table rows (except the
+            first, which contains table headers): */
+            for (i = 1; i < (rows.length - 1); i++) {
+              // Start by saying there should be no switching:
+              shouldSwitch = false;
+              /* Get the two elements you want to compare,
+              one from current row and one from the next: */
+              x = rows[i].getElementsByTagName("TD")[n];
+              y = rows[i + 1].getElementsByTagName("TD")[n];
+              /* Check if the two rows should switch place,
+              based on the direction, asc or desc: */
+              if (dir == "asc") {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                  // If so, mark as a switch and break the loop:
+                  shouldSwitch = true;
+                  break;
+                }
+              } else if (dir == "desc") {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                  // If so, mark as a switch and break the loop:
+                  shouldSwitch = true;
+                  break;
+                }
+              }
+            }
+            if (shouldSwitch) {
+              /* If a switch has been marked, make the switch
+              and mark that a switch has been done: */
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+              // Each time a switch is done, increase this count by 1:
+              switchcount ++;
+            } else {
+              /* If no switching has been done AND the direction is "asc",
+              set the direction to "desc" and run the while loop again. */
+              if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+              }
+            }
+          }
+        }
+        </script>
+
+<script>
+        function Buscar(n) {
+          // Declare variables
+          var input, filter, table, tr, td, i, txtValue;
+          input = document.getElementById("buscar"+n);
+          filter = input.value;
+          table = document.getElementById("empleados");
+          tr = table.getElementsByTagName("tr");
+        
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[n];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }
+          }
+        }
+        </script>
+
+
+</html>
