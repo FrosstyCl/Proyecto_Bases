@@ -5,8 +5,6 @@ const morgan = require('morgan');
 const mysql=require('mysql')
 const connection= require('express-myconnection')
 
-
-
 //importar rutas de usuarios
 const usuarios = require('./routes/usuarios')
 

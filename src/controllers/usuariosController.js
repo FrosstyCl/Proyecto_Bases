@@ -42,8 +42,7 @@ controller.addEd = (req,res)=>{
 controller.addEmpleado = (req,res)=>{
     const data=req.body;
     req.getConnection((err, conn)=>{
-    
-        conn.query('INSERT INTO empleado set ?',[data],(err,rows)=> {
+    conn.query('INSERT INTO empleado set ?',[data],(err,rows)=> {
             res.redirect('/empleados.html')
         });
     })
@@ -52,7 +51,16 @@ controller.mostrarEmpleado = (req,res)=>{
     req.getConnection((err,conn)=>{
     res.setHeader('Access-Control-Allow-Origin', '*')
         conn.query('select * from empleado order by empleado.id_edificio ',(err,rows)=>{
-            console.log(rows)
+            res.json(rows)
+        })
+    })
+}
+
+
+controller.mostrarAtenciones = (req,res)=>{
+    req.getConnection((err,conn)=>{
+    res.setHeader('Access-Control-Allow-Origin', '*')
+        conn.query('select empleado.nombre as medico, empleado.id as medico_id, paciente.nombre as paciente, paciente.id as paciente_id,atencion.fecha, atencion.hora from atencion,paciente, empleado where atencion.id_paciente=paciente.id and atencion.id_empleado=empleado.id;',(err,rows)=>{
             res.json(rows)
         })
     })

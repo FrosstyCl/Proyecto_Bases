@@ -13,4 +13,6 @@ router.post('/addEd',controller.addEd)
 router.get('/mostrarEmpleado',controller.mostrarEmpleado)
 router.post('/addEmpleado',controller.addEmpleado)
 
+router.get('/mostrarAtenciones',controller.mostrarAtenciones)
+
 module.exports= router;
