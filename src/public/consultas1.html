@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Base de datos - Consultas</title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/sandstone/bootstrap.min.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="./index.html">Inicio</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="./pacientes.html">Pacientes</a>
+        </li>
+        <li>
+          <a class="nav-link" href="./empleados.html">Empleados</a>
+        </li>
+        <li>
+          <a class="nav-link" href="./edificios.html">Edificios</a>
+        </li>
+        <li>
+          <a class="nav-link" href="./atencion.html">Atenciones</a>
+        </li>
+        <li class="nav-item">
+              <a class="nav-link" href="/consultas.html">Consultas</a>
+        </li>
+      </ul>
+      </div>
+  </nav>
+
+
+  <div class="container">
+    <div class="row mt-5"> 
+        <div class="col-md-7">
+                <table class="table" >
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" >Resultado</th>
+                      </tr>
+                    </thead>
+                    <tbody id='consultas'> </tbody>
+                  </table>
+        </div>
+        <div class="col-md-5">
+          <div class="card">
+            <div class="card-body">
+              <form action="/consulta" method="POST">
+                <input type="radio" name="consulta" value="1" id="">Consulta1 <br>
+                <input type="radio" name="consulta" value="2" id="">Consulta2 <br>
+                <input type="radio" name="consulta" value="3" id="">Consulta2 <br>
+                <input type="radio" name="consulta" value="4" id="">Consulta2 <br>
+                <input type="radio" name="consulta" value="5" id="">Consulta2 <br>
+                <input type="submit" value="consultar">
+              </form>
+            </div>
+      
+  </body>
+
+
+
+
+  <script>
+    var contenido = document.querySelector('#consultas')
+    fetch('http://localhost:4000/consulta')// de donde viene
+    .then(res => res.json())
+    .then(data => {
+      for(i =0; i<data.length ; i++){//recorrer el json y el $ es el valor del dato 
+        contenido.innerHTML += `
+        <td> ${data[i].nombre} </td>
+        <td> ${data[i].costes} </td>
+        `
+    }})
+  </script>
+</html>

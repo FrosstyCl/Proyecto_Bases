@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sistema de Salud</title>
     <link rel="stylesheet" href="https://bootswatch.com/4/sandstone/bootstrap.min.css">
-</head>
+  </head>
 
 
 <body>
@@ -29,14 +29,55 @@
         <li>
             <a class="nav-link" href="./atencion.html">Atenciones</a>
           </li>
+          <li>
+              <a class="nav-link" href="./consultas.html">Consultas</a>
+      </li>
       </ul>
       </div>
   </nav>
 
-    <div class="grid-container" id="atenciones"
-      <!--agregando el buscar-->
-    </div>
-
+  <div class="container">
+      <div class="row mt-5"> 
+          <div class="col-md-7">
+                  <table class="table" >
+                      <thead class="thead-dark">
+                        <tr>
+                          <th scope="col" >Nombre Medico</th>
+                          <th scope="col" >Nombre Paciente</th>
+                          <th scope="col" >Fecha</th>
+                          <th scope="col" >Hora</th>
+                        </tr>
+                      </thead>
+                      <tbody id='atenciones'> </tbody>
+                    </table>
+          </div>
+          <div class="col-md-5">
+            <div class="card">
+              <div class="card-body">
+                <form action="/addAtencion" method="POST">
+                  <div class="form-group">
+                    <input type="text" name="id_empleado" placeholder="Id Medico" class=" form-control">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" name="id_paciente" placeholder="Id Paciente" class=" form-control">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" name="fecha" placeholder="Fecha" class=" form-control">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" name="hora" placeholder="Hora" class=" form-control">
+                  </div>
+                  <button type="submit" class="btn btn-primary"> Registrar Atencion </button>
+                </form>
+              </div>
+              <div class="card-body">
+                  <div class="form-group">
+                      <input type="text" id="buscar0" onkeyup="Buscar(0)" placeholder="Buscar por Nombre Medico" class=" form-control">
+                  </div>
+                  <div class="form-group">
+                      <input type="text" id="buscar1" onkeyup="Buscar(1)" placeholder="Buscar por Nombre Paciente" class=" form-control">
+                  </div>
+              </div>
 
 
 
@@ -52,42 +93,38 @@ var contenido = document.querySelector('#atenciones')
     .then(data => {
       for(i =0; i<data.length ; i++){//recorrer el json y el $ es el valor del dato 
         contenido.innerHTML += `
-        <div class="col-md-auto">
-        <div class="card">
-          <div class="card-body">
-            <details><summary>
-            <a> Medico: ${data[i].medico}</a>
-          </summary>
-          <a> Medico Id: ${data[i].medico_id}</a>
-          </details>
-            <br>
-            <details><summary>
-            <a> Paciente: ${data[i].paciente}</a>
-          </summary>
-          <a> Paciente Id: ${data[i].paciente_id}</a>
-          </details>
-            <br>
-            <details><summary>
-            <a> Fecha: ${data[i].fecha}</a>
-          </summary>
-            <br>
-            <a> Hora: ${data[i].hora}</a>
-            </details>
-              <br>
-             </div>
-          </div>
-        </div>
+        <td> <details><summary>${data[i].medico}</summary> Id Medico:${data[i].medico_id}</details></td>
+        <td><details><summary> ${data[i].paciente}</summary> Id Paciente: ${data[i].paciente_id}</details> </td>
+        <td> ${data[i].fecha} </td>
+        <td> ${data[i].hora} </td>
         `
     }})
 </script>
 
-
-
-
 <script>
-function detalles(n){
+    function Buscar(n) {
+      // Declare variables
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("buscar"+n);
+      filter = input.value;
+      table = document.getElementById("atenciones");
+      tr = table.getElementsByTagName("tr");
+    
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[n];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toLowerCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+    </script>
 
 
-}
 </script>
 </html>

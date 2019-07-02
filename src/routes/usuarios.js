@@ -14,5 +14,9 @@ router.get('/mostrarEmpleado',controller.mostrarEmpleado)
 router.post('/addEmpleado',controller.addEmpleado)
 
 router.get('/mostrarAtenciones',controller.mostrarAtenciones)
+router.post('/addAtencion',controller.addAtencion)
 
+router.post('/consulta',controller.consulta)
+
+router.get('/araya',controller.araya)
 module.exports= router;
